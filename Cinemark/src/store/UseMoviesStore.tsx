@@ -33,10 +33,13 @@ export const useMoviesStore = create<MoviesState>((set) => ({
         set(() => ({ loading: true }))
         fetch(URL, options)
             .then(res => res.json())
-            .then(res => console.log(res))
+            .then(res => {
+                set({ items: res.results, loading: false, error: null })
+            })
             .catch(err => {
                 set({
-                    error: err
+                    error: err.message,
+                    loading: false
                 })
             });
     }
