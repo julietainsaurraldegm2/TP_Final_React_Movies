@@ -1,15 +1,7 @@
 import { create } from 'zustand'
 import type { Movies } from '../types/movies';
 
-function getRandomInt(min: number, max: number) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-const page = getRandomInt(1, 500)
 const API_KEY = '8c10e7a4a8f3744b5128e0c32584a906';
-const URL = `https://api.themoviedb.org/3/movie/popular?page=${page}?api_key=${API_KEY}&language=es-ES`;
 const options = {
     method: 'GET',
     headers: {
@@ -20,30 +12,44 @@ const options = {
 
 interface MoviesState {
     items: Movies[];
+    page: number;
     loading: boolean;
     error: string | null;
     fetchMovies: () => void;
+    incrementar: () => void
+    decrementar: () => void
 }
 
-export const useMoviesStore = create<MoviesState>((set) => ({
+export const useMoviesStore = create<MoviesState>((set, get) => ({
     items: [],
     error: null,
     loading: false,
     fetchMovies: async () => {
+        const { page } = get();
+        const URL = `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${API_KEY}&language=es-ES`;
+
         set(() => ({ loading: true }))
         fetch(URL, options)
             .then(res => res.json())
             .then(res => {
-                set({ items: res.results, loading: false, error: null })
+                const filteredMovies = res.results.filter((movie: Movies) => movie.overview && movie.overview.trim() !== "");
+
+                set({
+                    items: filteredMovies,
+                    loading: false,
+                    error: null
+                })
             })
             .catch(err => {
-                set({
-                    error: err.message,
-                    loading: false
-                })
+                set({ error: err.message, loading: false })
             });
-    }
+    },
+    page: 2,
+    incrementar: () => set((state) => ({ page: state.page + 1 })),
+    decrementar: () => set((state) => ({ page: state.page <= 1 ? state.page : state.page - 1 })),
+
 }))
+
 
 
 

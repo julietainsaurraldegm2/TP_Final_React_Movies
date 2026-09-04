@@ -1,4 +1,5 @@
 import type { Movies } from "../types/movies";
+import "./MovieStyle.css"
 
 interface MovieProps {
     item: Movies;
@@ -9,9 +10,12 @@ function Movie({ item }: MovieProps) {
 
     return (
         <div>
-            <h2>{item.title}</h2>
-            <p>{item.overview}</p>
-            <img src={baseUrlMovies+item.poster_path} alt={`La pelicula se lanzo ${item.release_date}`}></img>
+            <h2 className="title">{item.title}</h2>
+            <div className="infoMovie">
+                <p>{item.overview}</p>
+                <img src={baseUrlMovies + item.poster_path}></img>
+                <p>{`La pelicula se lanzo en ${item.release_date}`}</p>
+            </div>
         </div>
     )
 }

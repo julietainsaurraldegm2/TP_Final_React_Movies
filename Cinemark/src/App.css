@@ -182,3 +182,9 @@
     border-right-color: var(--border);
   }
 }
+
+/*Separador de movies*/
+
+.movie {
+    display: flex;
+}
