@@ -2,14 +2,13 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import type { User } from "../Types/User"
 import Credentials from "../Data/Credentials.json"
-
 interface InfoState {
     user: User | null
     email: string
     password: string
     setEmail: (email: string) => void
     setPassword: (password: string) => void
-    login: (email: string, password: string, name: string) => void
+    login: (email: string, password: string, name: string) => boolean
     logout: () => void
 }
 
@@ -26,12 +25,14 @@ const userInfo = create<InfoState>()(
             setEmail: (email) => set({ email }),
             setPassword: (password) => set({ password }),
             login: (email, password, name) => {
+                console.log('store.login called with', { email, password, name })
                 const match = testCredentials.find(
                     (credential) => credential.email === email && credential.password === password,
                 )
 
                 if (!match) {
-                    return
+                    console.log('store.login -> no match for credentials')
+                    return false
                 }
 
                 const finalName = name.trim() || match.name
@@ -41,8 +42,10 @@ const userInfo = create<InfoState>()(
                     email,
                     password,
                 })
+                return true
             },
             logout: () => {
+                console.log('store.logout called')
                 set({ user: null, email: '', password: '' })
             }
         }),

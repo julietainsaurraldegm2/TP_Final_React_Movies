@@ -3,6 +3,7 @@ import userInfo from "../../Store/userInfo";
 
 function Login() {
   const [user, setUser] = useState('')
+  const [error, setError] = useState('')
   const userState = userInfo((state) => state.user)
   const email = userInfo((state) => state.email)
   const setEmail = userInfo((state) => state.setEmail)
@@ -10,12 +11,19 @@ function Login() {
   const password = userInfo((state) => state.password)
   const setPassword = userInfo((state) => state.setPassword)
   const logout = userInfo((state) => state.logout)
+  console.log('Login render -> userState:', userState, 'email:', email, 'password:', password)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     if (user.trim() === '' || email.trim() === '' || password.trim() === '') return
-    login(email, password, user)
+    console.log('handleSubmit -> intentando login con', { email, password, name: user })
+    const ok = login(email, password, user)
+    if (!ok) {
+      setError('Email o contraseña incorrectos')
+    } else {
+      setError('')
+    }
   }
 
   return (
@@ -24,6 +32,7 @@ function Login() {
 
       {!userState ? (
         <form onSubmit={handleSubmit} id="login-form">
+          {error && <p style={{ color: 'red' }}>{error}</p>}
           <input
             id="name-input"
             type="text"
@@ -58,8 +67,8 @@ function Login() {
         </button>
       )}
     </>
-  )
-}
+  )}
+
 
 export default Login
 
