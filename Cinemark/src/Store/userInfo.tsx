@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
-import type { User } from "../Types/User"
+import type { User } from "../types/User"
 import Credentials from "../Data/Credentials.json"
 interface InfoState {
     user: User | null

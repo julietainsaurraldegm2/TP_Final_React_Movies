@@ -12,7 +12,7 @@ const options = {
 
 const API_URL = 'https://api.themoviedb.org/3';
 
-async function fetchApiData(endpoint: string): Promise<T> {
+async function fetchApiData<T>(endpoint: string): Promise<T> {
     const response = await fetch(`${API_URL}${endpoint}`, options);
 
     if (!response.ok) {
