@@ -1,4 +1,5 @@
-import type { Movies } from "../Types/movies";
+import type { Movies } from "../types/movies";
+import { useMoviesStore } from "../store/UseMoviesStore";
 import "./MovieStyle.css"
 
 interface MovieProps {
@@ -6,6 +7,7 @@ interface MovieProps {
 }
 
 function Movie({ item }: MovieProps) {
+    const moreInfo = useMoviesStore((state) => state.moreInfo);
     const baseUrlMovies = `https://image.tmdb.org/t/p/w500/`
 
     return (
@@ -15,6 +17,7 @@ function Movie({ item }: MovieProps) {
                 <p>{item.overview}</p>
                 <img src={baseUrlMovies + item.poster_path} alt="Poster de pelicula"></img>
                 <p>{`La pelicula se lanzo en ${item.release_date}`}</p>
+                <button onClick={() => moreInfo(item.id)}>Ver más info</button>
             </div>
         </div>
     )
