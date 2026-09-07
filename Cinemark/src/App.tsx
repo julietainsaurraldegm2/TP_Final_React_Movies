@@ -1,8 +1,12 @@
-import { useEffect } from "react"; 
-import { useMoviesStore } from "./store/UseMoviesStore";
 import Movie from "./components/Movie";
 import { ExtraInfo } from "./components/ExtraInfo";
-import "./App.css";
+import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Login from './Pages/Login/Login';
+import { useMoviesStore } from './Store/UseMoviesStore';
+import Movie from './components/Movie';
+import userInfo from './Store/userInfo';
+import './App.css';
 
 function App() {
   const items = useMoviesStore((state) => state.items);
@@ -19,7 +23,12 @@ function App() {
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies, page]);
+  const user = userInfo((state) => state.user)
 
+  useEffect(() => {
+    if (user) fetchMovies();
+  }, [fetchMovies, page, user]);
+  
   return (
     <div style={{ padding: '20px' }}>
       <h1>Cinemark: Tu selector de películas.</h1>
