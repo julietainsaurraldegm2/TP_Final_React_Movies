@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { persist } from "zustand/middleware"
+import { createJSONStorage, persist } from "zustand/middleware"
 import type { User } from "../Types/User"
 import Credentials from "../Data/Credentials.json"
 
@@ -9,7 +9,8 @@ interface InfoState {
     password: string
     setEmail: (email: string) => void
     setPassword: (password: string) => void
-    login: (email: string, password: string) => void
+    login: (email: string, password: string, name: string) => void
+    logout: () => void
 }
 
 export const ClAVE_STORAGE = '090807'
@@ -24,7 +25,7 @@ const userInfo = create<InfoState>()(
             password: '',
             setEmail: (email) => set({ email }),
             setPassword: (password) => set({ password }),
-            login: (email, password) => {
+            login: (email, password, name) => {
                 const match = testCredentials.find(
                     (credential) => credential.email === email && credential.password === password,
                 )
@@ -33,14 +34,26 @@ const userInfo = create<InfoState>()(
                     return
                 }
 
+                const finalName = name.trim() || match.name
+
                 set({
-                    user: { name: match.name, email: match.email },
+                    user: { name: finalName, email: match.email },
                     email,
                     password,
                 })
             },
+            logout: () => {
+                set({ user: null, email: '', password: '' })
+            }
         }),
-        { name: ClAVE_STORAGE }
+        {
+            name: ClAVE_STORAGE,
+            storage: createJSONStorage(() => localStorage),
+            partialize: (state) => ({
+                user: state.user,
+                email: state.email,
+            }),
+        }
     )
 )
 
