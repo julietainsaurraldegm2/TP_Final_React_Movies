@@ -1,3 +1,6 @@
+import { useState } from 'react'
+
+import Login from './Pages/Login/Login';
 import { useEffect } from "react"; 
 import { useMoviesStore } from "./store/UseMoviesStore";
 import Movie from "./components/Movie";
@@ -17,6 +20,10 @@ function App() {
   }, [fetchMovies, page]);
 
   return (
+    <>
+      <Login/>
+    </>
+  )
     <div style={{ padding: '20px' }}>
       <h1>Cinemark: Tu selector de películas.</h1>
       <nav>
