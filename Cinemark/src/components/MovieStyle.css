@@ -1,0 +1,39 @@
+/*Items de la movie*/
+
+.title {
+    color: purple;
+    border-bottom: 2px black solid;
+    margin-top: 10px;
+}
+
+.infoMovie {
+    border-left: 2px black solid;
+    border-right: 2px black solid;
+    border-bottom: 2px black solid;
+    background-image: url('../assets/universe.jpg');
+    color: white;
+}
+
+.reviewsSection {
+    padding: 20px;
+}
+
+.reviewCard {
+    border-top: 1px solid white;
+    padding: 12px 0;
+}
+
+.reviewCard h4,
+.reviewCard p {
+    margin: 6px 0;
+}
+
+.reviewCard small {
+    color: #d6d6d6;
+}
+
+.reviewContent {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 12px;
+}
