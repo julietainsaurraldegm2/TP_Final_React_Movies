@@ -1,0 +1,15 @@
+/*Items de la movie*/
+
+.title {
+    color: purple;
+    border-bottom: 2px black solid;
+    margin-top: 10px;
+}
+
+.infoMovie {
+    border-left: 2px black solid;
+    border-right: 2px black solid;
+    border-bottom: 2px black solid;
+    background-image: url('../assets/universe.jpg');
+    color: white;
+}
