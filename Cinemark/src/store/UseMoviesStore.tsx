@@ -29,20 +29,24 @@ export const useMoviesStore = create<MoviesState>((set, get) => ({
         const URL = `https://api.themoviedb.org/3/movie/popular?page=${page}&api_key=${API_KEY}&language=es-ES`;
 
         set(() => ({ loading: true }))
-        fetch(URL, options)
-            .then(res => res.json())
-            .then(res => {
-                const filteredMovies = res.results.filter((movie: Movies) => movie.overview && movie.overview.trim() !== "");
+        try {
+            const response = await fetch(URL, options);
 
-                set({
-                    items: filteredMovies,
-                    loading: false,
-                    error: null
-                })
-            })
-            .catch(err => {
-                set({ error: err.message, loading: false })
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            const filteredMovies = data.results.filter((movie: Movies) => movie.overview && movie.overview.trim() !== "");
+
+            set({
+                items: filteredMovies,
+                loading: false,
+                error: null
             });
+        } catch (err) {
+            set({ error: err instanceof Error ? err.message : 'Error desconocido', loading: false });
+        }
     },
     page: 2,
     incrementar: () => set((state) => ({ page: state.page + 1 })),

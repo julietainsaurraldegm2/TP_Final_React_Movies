@@ -13,7 +13,7 @@ function Movie({ item }: MovieProps) {
             <h2 className="title">{item.title}</h2>
             <div className="infoMovie">
                 <p>{item.overview}</p>
-                <img src={baseUrlMovies + item.poster_path}></img>
+                <img src={baseUrlMovies + item.poster_path} alt="Poster de pelicula"></img>
                 <p>{`La pelicula se lanzo en ${item.release_date}`}</p>
             </div>
         </div>
