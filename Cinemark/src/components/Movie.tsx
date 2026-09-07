@@ -1,4 +1,4 @@
-import type { Movies } from "../types/movies";
+import type { Movies } from "../Types/movies";
 import "./MovieStyle.css"
 
 interface MovieProps {

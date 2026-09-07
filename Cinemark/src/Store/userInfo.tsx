@@ -41,8 +41,8 @@ const userInfo = create<InfoState>()(
                     user: { name: finalName, email: match.email },
                     email,
                     password,
-                })
-                return true
+                });
+                return true;
             },
             logout: () => {
                 console.log('store.logout called')
