@@ -31,3 +31,9 @@
 .reviewCard small {
     color: #d6d6d6;
 }
+
+.reviewContent {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 12px;
+}
