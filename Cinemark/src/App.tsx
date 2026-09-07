@@ -1,4 +1,4 @@
-import { useEffect } from "react"; // 1. Importa useEffect
+import { useEffect } from "react"; 
 import { useMoviesStore } from "./store/UseMoviesStore";
 import Movie from "./components/Movie";
 import "./App.css";
