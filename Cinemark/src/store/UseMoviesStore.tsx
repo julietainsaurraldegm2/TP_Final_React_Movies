@@ -16,8 +16,11 @@ interface MoviesState {
     loading: boolean;
     error: string | null;
     fetchMovies: () => void;
-    incrementar: () => void
-    decrementar: () => void
+    incrementar: () => void;
+    decrementar: () => void;
+    moreInfo: (movieId: number) => void;
+    clearMoreInfo: () => void;
+    selectedMovieId: number | null;
 }
 
 export const useMoviesStore = create<MoviesState>((set, get) => ({
@@ -49,9 +52,11 @@ export const useMoviesStore = create<MoviesState>((set, get) => ({
         }
     },
     page: 2,
+    selectedMovieId: null,
     incrementar: () => set((state) => ({ page: state.page + 1 })),
     decrementar: () => set((state) => ({ page: state.page <= 1 ? state.page : state.page - 1 })),
-
+    moreInfo: (movieId) => set({ selectedMovieId: movieId }),
+    clearMoreInfo: () => set({ selectedMovieId: null }),
 }))
 
 
