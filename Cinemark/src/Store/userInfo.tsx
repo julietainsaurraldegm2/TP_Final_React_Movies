@@ -2,10 +2,13 @@ import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 import type { User } from "../Types/User"
 import Credentials from "../Data/Credentials.json"
+
 interface InfoState {
     user: User | null
+    name: string
     email: string
     password: string
+    setName: (name: string) => void
     setEmail: (email: string) => void
     setPassword: (password: string) => void
     login: (email: string, password: string, name: string) => boolean
@@ -20,8 +23,10 @@ const userInfo = create<InfoState>()(
     persist(
         (set) => ({
             user: null,
+            name: '',
             email: '',
             password: '',
+            setName: (name) => set({ name }),
             setEmail: (email) => set({ email }),
             setPassword: (password) => set({ password }),
             login: (email, password, name) => {
@@ -39,6 +44,7 @@ const userInfo = create<InfoState>()(
 
                 set({
                     user: { name: finalName, email: match.email },
+                    name: finalName,
                     email,
                     password,
                 });
@@ -46,7 +52,7 @@ const userInfo = create<InfoState>()(
             },
             logout: () => {
                 console.log('store.logout called')
-                set({ user: null, email: '', password: '' })
+                set({ user: null, name: '', email: '', password: '' })
             }
         }),
         {
@@ -54,6 +60,7 @@ const userInfo = create<InfoState>()(
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 user: state.user,
+                name: state.name,
                 email: state.email,
             }),
         }
