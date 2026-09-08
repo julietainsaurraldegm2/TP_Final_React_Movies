@@ -1,6 +1,6 @@
 import { ExtraInfo } from "./components/ExtraInfo";
 import { useEffect } from 'react'
-import { useMoviesStore } from './store/UseMoviesStore';
+import { useMoviesStore } from './Store/UseMoviesStore';
 import Movie from './components/Movie';
 import './App.css';
 

@@ -1,5 +1,6 @@
 import { useMoviesStore } from "../Store/UseMoviesStore";
 import type { Movies } from "../Types/movies";
+import CommentUser from "./CommentUser";
 import "./MovieStyle.css";
 
 interface MovieProps {
@@ -57,6 +58,8 @@ function ExtraInfo({ item }: MovieProps) {
                         <p>No hay reviews disponibles para esta película.</p>
                     )}
                 </section>
+
+                <CommentUser key={`${item.id}-${item.title}`} pelicula={item} />
             </div>
         </div>
     );
