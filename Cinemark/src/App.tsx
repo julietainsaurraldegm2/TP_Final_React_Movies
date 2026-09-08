@@ -34,7 +34,7 @@ function App() {
   return (
     <div className={`app-shell tema-${tema}`}>
       <header className="app-header">
-        <h1>Cinemark: Tu selector de películas.</h1>
+        <h1>Cinemark: Tu recomendador de películas.</h1>
         <button type="button" className="navigation-button" onClick={() => setShowSettings(true)}>
           Settings
         </button>
