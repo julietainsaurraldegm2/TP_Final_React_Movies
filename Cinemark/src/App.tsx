@@ -1,10 +1,8 @@
-import { useState } from 'react'
-
-import Login from './Pages/Login/Login';
-import { useEffect } from "react"; 
-import { useMoviesStore } from "./store/UseMoviesStore";
-import Movie from "./components/Movie";
-import "./App.css";
+import { ExtraInfo } from "./components/ExtraInfo";
+import { useEffect } from 'react'
+import { useMoviesStore } from './store/UseMoviesStore';
+import Movie from './components/Movie';
+import './App.css';
 
 function App() {
   const items = useMoviesStore((state) => state.items);
@@ -14,43 +12,49 @@ function App() {
   const page = useMoviesStore((state) => state.page)
   const incrementar = useMoviesStore((state) => state.incrementar)
   const decrementar = useMoviesStore((state) => state.decrementar)
+  const selectedMovieId = useMoviesStore((state) => state.selectedMovieId)
+  const clearMoreInfo = useMoviesStore((state) => state.clearMoreInfo)
+  const selectedMovie = items.find((item) => item.id === selectedMovieId)
 
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies, page]);
-
+  
   return (
-    <>
-      <Login/>
-    </>
-  )
     <div style={{ padding: '20px' }}>
       <h1>Cinemark: Tu selector de películas.</h1>
-      <nav>
-        <button
-          type="button"
-          className="counter"
-          onClick={decrementar}
-        >
-          ⬅️
-        </button>
-        <span>{page}</span>
-        <button
-          type="button"
-          className="counter"
-          onClick={incrementar}
-        >
-          ➡️
-        </button>
-      </nav>
+      {!selectedMovie && <nav>
+          <button
+            type="button"
+            className="counter"
+            onClick={decrementar}
+          >
+            ⬅️
+          </button>
+          <span>{page}</span>
+          <button
+            type="button"
+            className="counter"
+            onClick={incrementar}
+          >
+            ➡️
+          </button>
+        </nav>}
       {loading && <p>Cargando películas...</p>}
       {error && <p>{error}</p>}
 
-      {items.map((item) => (
-        <div className="movie" key={item.id}>
-          <Movie item={item} />
-        </div>
-      ))}
+      {selectedMovie ? (
+        <>
+          <ExtraInfo item={selectedMovie} />
+          <button type="button" onClick={clearMoreInfo}>Volver a películas</button>
+        </>
+      ) : (
+        items.map((item) => (
+          <div className="movie" key={item.id}>
+            <Movie item={item} />
+          </div>
+        ))
+      )}
     </div>
   );
 }
