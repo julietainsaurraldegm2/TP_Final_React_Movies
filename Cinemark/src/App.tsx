@@ -1,3 +1,8 @@
+import { useEffect, type ReactNode } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
+import Login from './Pages/Login/Login';
+import Favorites from './Pages/Favorites';
+import { useMoviesStore } from './Store/UseMoviesStore';
 import { ExtraInfo } from "./components/ExtraInfo";
 import { useEffect } from 'react'
 import { useMoviesStore } from './store/UseMoviesStore';
@@ -23,6 +28,11 @@ function App() {
   return (
     <div style={{ padding: '20px' }}>
       <h1>Cinemark: Tu selector de películas.</h1>
+      <nav style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
+        <button
+          type="button"
+          className="counter"
+          onClick={decrementar}
       {!selectedMovie && <nav>
           <button
             type="button"
@@ -37,6 +47,10 @@ function App() {
             className="counter"
             onClick={incrementar}
           >
+          ➡️
+        </button>
+        <Link to="/favorites">Ver favoritos</Link>
+      </nav>
             ➡️
           </button>
         </nav>}
@@ -56,6 +70,35 @@ function App() {
         ))
       )}
     </div>
+  )
+}
+
+function ProtectedRoute({ children }: { children: ReactNode }) {
+  const user = userInfo((state) => state.user)
+  if (!user) return <Navigate to="/" replace />
+  return <>{children}</>
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/Movie" element={
+          <ProtectedRoute>
+            <MoviesView />
+          </ProtectedRoute>
+        } />
+        <Route path="/favorites" element={
+          <ProtectedRoute>
+            <Favorites />
+          </ProtectedRoute>
+        } />
+        {/* fallback: redirect unknown routes to login */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
   );
 }
 
