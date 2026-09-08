@@ -1,4 +1,3 @@
-// ...existing code...
 import React, { useEffect } from 'react'
 import './App.css'
 import { useMoviesStore } from './Store/UseMoviesStore'
@@ -76,4 +75,3 @@ function App() {
 }
 
 export default App
-// ...existing code...
