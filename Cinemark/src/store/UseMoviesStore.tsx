@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Actor, Movies, Review } from '../types/movies';
+import type { Actor, Movies, Review } from '../Types/movies';
 
 const API_KEY = '8c10e7a4a8f3744b5128e0c32584a906';
 const options = {
