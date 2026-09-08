@@ -1,5 +1,5 @@
-import type { Movies } from "../types/movies";
-import { useMoviesStore } from "../store/UseMoviesStore";
+import type { Movies } from "../Types/movies";
+import { useMoviesStore } from "../Store/UseMoviesStore";
 import "./MovieStyle.css"
 
 interface MovieProps {
