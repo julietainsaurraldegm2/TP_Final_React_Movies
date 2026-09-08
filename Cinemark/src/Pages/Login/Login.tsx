@@ -2,9 +2,10 @@ import { useState } from "react";
 import userInfo from "../../Store/userInfo";
 
 function Login() {
-  const [user, setUser] = useState('')
   const [error, setError] = useState('')
   const userState = userInfo((state) => state.user)
+  const name = userInfo((state) => state.name)
+  const setName = userInfo((state) => state.setName)
   const email = userInfo((state) => state.email)
   const setEmail = userInfo((state) => state.setEmail)
   const login = userInfo((state) => state.login)
@@ -16,9 +17,9 @@ function Login() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
-    if (user.trim() === '' || email.trim() === '' || password.trim() === '') return
-    console.log('handleSubmit -> intentando login con', { email, password, name: user })
-    const ok = login(email, password, user)
+    if (name.trim() === '' || email.trim() === '' || password.trim() === '') return
+    console.log('handleSubmit -> intentando login con', { email, password, name })
+    const ok = login(email, password, name)
     if (!ok) {
       setError('Email o contraseña incorrectos')
     } else {
@@ -36,8 +37,8 @@ function Login() {
           <input
             id="name-input"
             type="text"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="Escribí tu nombre"
           />
 
@@ -57,7 +58,7 @@ function Login() {
             placeholder="Escribí la contraseña"
           />
 
-          <button type="submit" disabled={user.trim() === '' || email.trim() === '' || password.trim() === ''}>
+          <button type="submit" disabled={name.trim() === '' || email.trim() === '' || password.trim() === ''}>
             Iniciar sesión
           </button>
         </form>
