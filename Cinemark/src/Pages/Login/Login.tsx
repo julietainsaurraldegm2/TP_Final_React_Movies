@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate  } from 'react-router-dom';
 import userInfo from "../../Store/userInfo";
+import "./Login.css"
 
 function Login() {
   const [error, setError] = useState('')
