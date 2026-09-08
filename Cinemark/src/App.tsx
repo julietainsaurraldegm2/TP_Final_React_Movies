@@ -1,10 +1,13 @@
 import { ExtraInfo } from "./components/ExtraInfo";
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useMoviesStore } from './Store/UseMoviesStore';
 import Movie from './components/Movie';
+import { Settings, useTema } from './components/Settings';
 import './App.css';
 
 function App() {
+  const [showSettings, setShowSettings] = useState(false)
+  const { tema } = useTema()
   const items = useMoviesStore((state) => state.items);
   const error = useMoviesStore((state) => state.error);
   const loading = useMoviesStore((state) => state.loading);
@@ -19,10 +22,23 @@ function App() {
   useEffect(() => {
     fetchMovies();
   }, [fetchMovies, page]);
-  
+
+  if (showSettings) {
+    return (
+      <div className={`app-shell tema-${tema}`}>
+        <Settings onBack={() => setShowSettings(false)} />
+      </div>
+    )
+  }
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Cinemark: Tu selector de películas.</h1>
+    <div className={`app-shell tema-${tema}`}>
+      <header className="app-header">
+        <h1>Cinemark: Tu selector de películas.</h1>
+        <button type="button" className="navigation-button" onClick={() => setShowSettings(true)}>
+          Settings
+        </button>
+      </header>
       {!selectedMovie && <nav>
           <button
             type="button"

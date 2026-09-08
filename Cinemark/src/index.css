@@ -14,6 +14,9 @@
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+  --page-bg: #f6f1e8;
+  --card-bg: #fffdf8;
+  --card-image: url('./assets/universeWhite.jpg');
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -64,6 +67,54 @@
 
 body {
   margin: 0;
+  background: var(--page-bg);
+}
+
+.app-shell {
+  min-height: 100svh;
+  padding: 20px;
+  box-sizing: border-box;
+  background: var(--page-bg);
+  color: var(--text);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.tema-oscuro {
+  --page-bg: #171923;
+  --card-bg: #272b38;
+  --card-image: url('./assets/universeBlack.jpg');
+  --text: #e6e8ef;
+  --text-h: #ffffff;
+  --border: #454a5c;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.navigation-button,
+.theme-button {
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: var(--text-h);
+  background: var(--accent-bg);
+  cursor: pointer;
+}
+
+.settings-page {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.settings-panel {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
 }
 
 h1,

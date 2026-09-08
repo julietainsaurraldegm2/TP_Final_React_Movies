@@ -10,8 +10,13 @@
     border-left: 2px black solid;
     border-right: 2px black solid;
     border-bottom: 2px black solid;
-    background-image: url('../assets/universe.jpg');
-    color: white;
+    background-image: var(--card-image);
+    background-size: cover;
+    background-position: center;
+    color: rgb(0, 0, 133);
+    border-radius: 8px;
+    padding: 16px;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .reviewsSection {
