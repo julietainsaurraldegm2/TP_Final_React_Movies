@@ -1,59 +1,22 @@
-import { useEffect, useState } from 'react'
-import { API_KEY, API_URL, options, useFavoritesStore } from '../Store/favoritesStore'
-import type { Movies } from '../Types/movies'
-
-async function fetchMovieById(movieId: number): Promise<Movies> {
-  const response = await fetch(`${API_URL}/movie/${movieId}?api_key=${API_KEY}&language=es-ES`, options)
-
-  if (!response.ok) {
-    throw new Error(`No se pudo cargar la película ${movieId}`)
-  }
-
-  return response.json()
-}
+import { useEffect } from 'react'
+import { useFavoritesStore } from '../Store/favoritesStore'
+import { useMoviesStore } from '../Store/UseMoviesStore'
 
 function Favorites() {
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds)
   const removeFavorite = useFavoritesStore((state) => state.removeFavorite)
-  const [movies, setMovies] = useState<Movies[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const movies = useMoviesStore((state) => state.items)
+  const loading = useMoviesStore((state) => state.loading)
+  const error = useMoviesStore((state) => state.error)
+  const fetchMovies = useMoviesStore((state) => state.fetchMovies)
 
   useEffect(() => {
-    if (favoriteIds.length === 0) {
-      setMovies([])
-      setError(null)
-      return
+    if (movies.length === 0) {
+      void fetchMovies()
     }
+  }, [fetchMovies, movies.length])
 
-    let isActive = true
-
-    const loadFavorites = async () => {
-      setLoading(true)
-      setError(null)
-
-      try {
-        const favoriteMovies = await Promise.all(favoriteIds.map(fetchMovieById))
-        if (isActive) {
-          setMovies(favoriteMovies)
-        }
-      } catch (err) {
-        if (isActive) {
-          setError(err instanceof Error ? err.message : 'Error cargando favoritos')
-        }
-      } finally {
-        if (isActive) {
-          setLoading(false)
-        }
-      }
-    }
-
-    void loadFavorites()
-
-    return () => {
-      isActive = false
-    }
-  }, [favoriteIds])
+  const favoriteMovies = movies.filter((movie) => favoriteIds.includes(movie.id))
 
   return (
     <div style={{ padding: '20px' }}>
@@ -66,17 +29,31 @@ function Favorites() {
         <p>Todavía no agregaste ninguna película a tus favoritos.</p>
       )}
 
-      {movies.length > 0 && (
-        <ul>
-          {movies.map((movie) => (
-            <li key={movie.id} style={{ marginBottom: '12px' }}>
-              <span>{movie.title}</span>
-              <button type="button" onClick={() => removeFavorite(movie.id)} style={{ marginLeft: '12px' }}>
-                Quitar
-              </button>
-            </li>
+      {favoriteMovies.length > 0 && (
+        <div style={{ display: 'grid', gap: '20px' }}>
+          {favoriteMovies.map((movie) => (
+            <div key={movie.id} style={{ border: '1px solid #ddd', borderRadius: '10px', padding: '12px', display: 'flex', gap: '16px' }}>
+              <img
+                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                alt={movie.title}
+                style={{ width: '120px', borderRadius: '8px' }}
+              />
+
+              <div>
+                <h3>{movie.title}</h3>
+                <p>{movie.overview}</p>
+                <p><strong>Estreno:</strong> {movie.release_date}</p>
+                <button type="button" onClick={() => removeFavorite(movie.id)}>
+                  Quitar
+                </button>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
+      )}
+
+      {!loading && favoriteIds.length > 0 && favoriteMovies.length === 0 && (
+        <p>No se encontraron películas favoritas en la lista cargada.</p>
       )}
     </div>
   )
