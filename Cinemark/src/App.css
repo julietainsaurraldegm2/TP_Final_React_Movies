@@ -17,6 +17,18 @@
   }
 }
 
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+main,
+#root {
+  flex: 1;
+}
+
 .hero {
   position: relative;
 

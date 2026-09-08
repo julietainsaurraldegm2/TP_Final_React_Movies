@@ -1,21 +1,76 @@
 /*Items de la movie*/
 
+.movie {
+    width: 100%;
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.movie > div {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.12);
+}
+
 .title {
-    color: purple;
-    border-bottom: 2px black solid;
-    margin-top: 10px;
+    color: var(--text-h);
+    border-bottom: 1px solid var(--border);
+    margin: 0;
+    padding: 18px 20px 14px;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.08);
 }
 
 .infoMovie {
-    border-left: 2px black solid;
-    border-right: 2px black solid;
-    border-bottom: 2px black solid;
-    background-image: var(--card-image);
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr);
+    gap: 20px;
+    align-items: center;
+    background-image: linear-gradient(rgba(11, 14, 20, 0.18), rgba(11, 14, 20, 0.18)), var(--card-image);
     background-size: cover;
     background-position: center;
     color: var(--text);
-    border-radius: 8px;
-    padding: 16px;
+    border: none;
+    border-radius: 0;
+    padding: 20px;
+    text-align: left;
+}
+
+.infoMovie > * {
+    margin: 0;
+}
+
+.infoMovie p {
+    line-height: 1.6;
+}
+
+.infoMovie img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.movie button,
+.movie .favorite-toggle {
+    margin: 0 20px 20px;
+    padding: 10px 14px;
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    background: var(--accent-bg);
+    color: var(--text-h);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.movie button:hover,
+.movie .favorite-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .reviewsSection {
@@ -23,7 +78,7 @@
 }
 
 .reviewCard {
-    border-top: 1px solid white;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
     padding: 12px 0;
 }
 
@@ -37,7 +92,13 @@
 }
 
 .reviewContent {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.45);
     border-radius: 20px;
     padding: 12px;
+}
+
+@media (max-width: 768px) {
+    .infoMovie {
+        grid-template-columns: 1fr;
+    }
 }
