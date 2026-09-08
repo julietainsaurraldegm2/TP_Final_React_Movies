@@ -3,11 +3,13 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import Login from './Pages/Login/Login';
 import Favorites from './Pages/Favorites';
 import { useMoviesStore } from './Store/UseMoviesStore';
+import { ExtraInfo } from "./components/ExtraInfo";
+import { useEffect } from 'react'
+import { useMoviesStore } from './store/UseMoviesStore';
 import Movie from './components/Movie';
-import userInfo from './Store/userInfo';
 import './App.css';
 
-function MoviesView() {
+function App() {
   const items = useMoviesStore((state) => state.items);
   const error = useMoviesStore((state) => state.error);
   const loading = useMoviesStore((state) => state.loading);
@@ -15,12 +17,14 @@ function MoviesView() {
   const page = useMoviesStore((state) => state.page)
   const incrementar = useMoviesStore((state) => state.incrementar)
   const decrementar = useMoviesStore((state) => state.decrementar)
-  const user = userInfo((state) => state.user)
+  const selectedMovieId = useMoviesStore((state) => state.selectedMovieId)
+  const clearMoreInfo = useMoviesStore((state) => state.clearMoreInfo)
+  const selectedMovie = items.find((item) => item.id === selectedMovieId)
 
   useEffect(() => {
-    if (user) fetchMovies();
-  }, [fetchMovies, page, user]);
-
+    fetchMovies();
+  }, [fetchMovies, page]);
+  
   return (
     <div style={{ padding: '20px' }}>
       <h1>Cinemark: Tu selector de películas.</h1>
@@ -29,27 +33,42 @@ function MoviesView() {
           type="button"
           className="counter"
           onClick={decrementar}
+      {!selectedMovie && <nav>
+          <button
+            type="button"
+            className="counter"
+            onClick={decrementar}
           >
-          ⬅️
-        </button>
-        <span>{page}</span>
-        <button
-          type="button"
-          className="counter"
-          onClick={incrementar}
+            ⬅️
+          </button>
+          <span>{page}</span>
+          <button
+            type="button"
+            className="counter"
+            onClick={incrementar}
           >
           ➡️
         </button>
         <Link to="/favorites">Ver favoritos</Link>
       </nav>
+            ➡️
+          </button>
+        </nav>}
       {loading && <p>Cargando películas...</p>}
       {error && <p>{error}</p>}
 
-      {items.map((item) => (
-        <div className="movie" key={item.id}>
-          <Movie item={item} />
-        </div>
-      ))}
+      {selectedMovie ? (
+        <>
+          <ExtraInfo item={selectedMovie} />
+          <button type="button" onClick={clearMoreInfo}>Volver a películas</button>
+        </>
+      ) : (
+        items.map((item) => (
+          <div className="movie" key={item.id}>
+            <Movie item={item} />
+          </div>
+        ))
+      )}
     </div>
   )
 }
@@ -80,6 +99,7 @@ function App() {
       </Routes>
     </BrowserRouter>
   )
+  );
 }
 
 export default App;

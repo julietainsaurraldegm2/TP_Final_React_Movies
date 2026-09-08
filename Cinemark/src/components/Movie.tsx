@@ -1,5 +1,6 @@
 import type { Movies } from "../Types/movies";
 import { useFavoritesStore } from "../Store/favoritesStore";
+import { useMoviesStore } from "../Store/UseMoviesStore";
 import "./MovieStyle.css"
 
 interface MovieProps {
@@ -7,6 +8,7 @@ interface MovieProps {
 }
 
 function Movie({ item }: MovieProps) {
+    const moreInfo = useMoviesStore((state) => state.moreInfo);
     const baseUrlMovies = `https://image.tmdb.org/t/p/w500/`
     const isFavorite = useFavoritesStore((state) => state.isFavorite(item.id))
     const toggleFavorite = useFavoritesStore((state) => state.toggleFavorite)
@@ -21,6 +23,7 @@ function Movie({ item }: MovieProps) {
                 <p>{item.overview}</p>
                 <img src={baseUrlMovies + item.poster_path} alt="Poster de pelicula"></img>
                 <p>{`La pelicula se lanzo en ${item.release_date}`}</p>
+                <button onClick={() => moreInfo(item.id)}>Ver más info</button>
             </div>
         </div>
     )
