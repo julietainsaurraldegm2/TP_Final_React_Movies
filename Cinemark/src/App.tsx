@@ -1,12 +1,16 @@
-import { ExtraInfo } from "./components/ExtraInfo";
-import { useEffect, useState } from 'react'
-import { useMoviesStore } from './Store/UseMoviesStore';
-import Movie from './components/Movie';
-import { Settings, useTema } from './components/Settings';
-import './App.css';
+import { useEffect, useState, type ReactNode } from 'react'
+import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import { useMoviesStore } from './Store/UseMoviesStore'
+import userInfo from './Store/userInfo'
+import Login from './Pages/Login/Login'
+import Favorites from './Pages/Favorites'
+import Movie from './components/Movie'
+import { ExtraInfo } from './components/ExtraInfo'
+import { Settings, useTema } from './components/Settings'
+import './App.css'
 
-function App() {
-
+function MoviesView() {
+  const { tema } = useTema()
   const items = useMoviesStore((state) => state.items)
   const error = useMoviesStore((state) => state.error)
   const loading = useMoviesStore((state) => state.loading)
@@ -17,11 +21,14 @@ function App() {
   const selectedMovieId = useMoviesStore((state) => state.selectedMovieId)
   const clearMoreInfo = useMoviesStore((state) => state.clearMoreInfo)
   const user = userInfo((state) => state.user)
+  const [showSettings, setShowSettings] = useState(false)
   const selectedMovie = items.find((item) => item.id === selectedMovieId)
 
   useEffect(() => {
-    fetchMovies();
-  }, [fetchMovies, page]);
+    if (user) {
+      void fetchMovies()
+    }
+  }, [fetchMovies, page, user])
 
   if (showSettings) {
     return (
@@ -39,20 +46,6 @@ function App() {
           Settings
         </button>
       </header>
-      {!selectedMovie && <nav>
-          <button
-            type="button"
-            className="counter"
-            onClick={decrementar}
-          >
-    if (user) {
-      void fetchMovies()
-    }
-  }, [fetchMovies, page, user])
-
-  return (
-    <div style={{ padding: '20px' }}>
-      <h1>Cinemark: Tu selector de películas.</h1>
 
       {!selectedMovie && (
         <nav style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
@@ -88,7 +81,9 @@ function App() {
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const user = userInfo((state) => state.user)
+
   if (!user) return <Navigate to="/" replace />
+
   return <>{children}</>
 }
 
