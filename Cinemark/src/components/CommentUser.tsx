@@ -254,9 +254,9 @@ function CommentUser({ pelicula }: CommentUserProps) {
                 Rating (0 a 10)
                 <input
                     type="number"
-                    min="0.5"
+                    min="0"
                     max="10"
-                    step="0.5"
+                    step="0"
                     value={rating || ""}
                     onChange={(event) => setRating(Number(event.target.value))}
                     disabled={cargando}
