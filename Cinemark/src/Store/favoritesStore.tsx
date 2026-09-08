@@ -1,44 +1,53 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import type { Movies } from '../Types/movies'
+
+export const API_KEY = '8c10e7a4a8f3744b5128e0c32584a906'
+export const API_URL = 'https://api.themoviedb.org/3'
+export const options = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YzEwZTdhNGE4ZjM3NDRiNTEyOGUwYzMyNTg0YTkwNiIsIm5iZiI6MTc4ODQzOTIyMS4yNjksInN1YiI6IjZhOTk2YWI1YjM1NmYwNTNmY2IyZjhjZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NqkTZkqmSUuYQ9eFoDjpWuHmuSsxr2cboEvSPdoAipc'
+  }
+}
 
 interface FavoritesState {
-  favorites: Movies[]
-  addFavorite: (movie: Movies) => void
+  favoriteIds: number[]
+  addFavorite: (movieId: number) => void
   removeFavorite: (movieId: number) => void
-  toggleFavorite: (movie: Movies) => void
+  toggleFavorite: (movieId: number) => void
   isFavorite: (movieId: number) => boolean
 }
 
 export const useFavoritesStore = create<FavoritesState>()(
   persist(
     (set, get) => ({
-      favorites: [],
-      addFavorite: (movie) => {
-        const favs = get().favorites
-        if (!favs.some((f) => f.id === movie.id)) {
-          set({ favorites: [...favs, movie] })
+      favoriteIds: [],
+      addFavorite: (movieId) => {
+        const ids = get().favoriteIds
+        if (!ids.includes(movieId)) {
+          set({ favoriteIds: [...ids, movieId] })
         }
       },
       removeFavorite: (movieId) => {
-        set({ favorites: get().favorites.filter((f) => f.id !== movieId) })
+        set({ favoriteIds: get().favoriteIds.filter((id) => id !== movieId) })
       },
-      toggleFavorite: (movie) => {
-        const favs = get().favorites
-        if (favs.some((f) => f.id === movie.id)) {
-          set({ favorites: favs.filter((f) => f.id !== movie.id) })
+      toggleFavorite: (movieId) => {
+        const ids = get().favoriteIds
+        if (ids.includes(movieId)) {
+          set({ favoriteIds: ids.filter((id) => id !== movieId) })
         } else {
-          set({ favorites: [...favs, movie] })
+          set({ favoriteIds: [...ids, movieId] })
         }
       },
       isFavorite: (movieId) => {
-        return get().favorites.some((f) => f.id === movieId)
+        return get().favoriteIds.includes(movieId)
       },
     }),
     {
       name: 'favorites-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ favorites: state.favorites }),
+      partialize: (state) => ({ favoriteIds: state.favoriteIds }),
     }
   )
 )
