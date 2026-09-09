@@ -3,7 +3,6 @@ import { useFavoritesStore } from '../../Store/favoritesStore'
 import { useMoviesStore } from '../../Store/UseMoviesStore'
 import { useNavigate } from 'react-router-dom'
 import { ExtraInfo } from '../../components/ExtraInfo'
-import './Favorites.css'
 
 function Favorites() {
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds)
