@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import Login from './Pages/Login/Login'
-import Favorites from './Pages/Favorites'
+import Favorites from './Pages/Favorites/Favorites'
 import { useMoviesStore } from './Store/UseMoviesStore'
 import { ExtraInfo } from './components/ExtraInfo'
 import Movie from './components/Movie'
