@@ -42,12 +42,14 @@ function MoviesView() {
     <div className={`app-shell tema-${tema}`}>
       <header className="app-header">
         <h1>Cinemark: Tu recomendador de películas.</h1>
-        <button type="button" className="navigation-button" onClick={() => setShowSettings(true)}>
-          Settings
-        </button>
-        <button type="button" className="navigation-button" onClick={() => navigate('/favorites')}>
-          Ver favoritos
-        </button>
+        <div style={ {gap:'100px'}}>
+          <button type="button" className="navigation-button" onClick={() => setShowSettings(true)}>
+            Settings
+          </button>
+          <button type="button" className="navigation-button" onClick={() => navigate('/favorites')}>
+            Ver favoritos
+          </button>
+        </div>
       </header>
 
       {!selectedMovie && (
