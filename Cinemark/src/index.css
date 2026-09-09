@@ -1,5 +1,5 @@
 :root {
-  --text: #6b6375;
+  --text: #000000;
   --text-h: #08060d;
   --bg: #fff;
   --border: #e5e4e7;
@@ -62,7 +62,6 @@ body {
 }
 
 #root {
-  width: 1126px;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -80,7 +79,6 @@ body {
   box-sizing: border-box;
   background: var(--page-bg);
   color: var(--text);
-  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .tema-oscuro {

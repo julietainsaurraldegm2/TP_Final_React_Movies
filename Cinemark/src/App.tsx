@@ -48,11 +48,11 @@ function MoviesView() {
       </header>
 
       {!selectedMovie && (
-        <nav style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
+        <nav style={{ display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center' }}>
           <button type="button" className="counter" onClick={decrementar}>
             ⬅️
           </button>
-          <span>{page}</span>
+          <span className='numberPage'>{page}</span>
           <button type="button" className="counter" onClick={incrementar}>
             ➡️
           </button>
@@ -66,7 +66,7 @@ function MoviesView() {
       {selectedMovie ? (
         <>
           <ExtraInfo item={selectedMovie} />
-          <button type="button" onClick={clearMoreInfo}>Volver a películas</button>
+          <button className="backButton" type="button" onClick={clearMoreInfo}>Volver a películas</button>
         </>
       ) : (
         items.map((item) => (

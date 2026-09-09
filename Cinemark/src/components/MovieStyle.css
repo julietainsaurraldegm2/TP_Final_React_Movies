@@ -50,7 +50,7 @@
 .infoMovie img {
     width: 100%;
     max-height: 420px;
-    object-fit: cover;
+    object-fit: inherit;
     border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
@@ -96,6 +96,53 @@
     border-radius: 20px;
     padding: 12px;
 }
+
+.extraInfo {
+    gap: 20px;
+    align-items: center;
+    background-image: linear-gradient(rgba(11, 14, 20, 0.18), rgba(11, 14, 20, 0.18)), var(--card-image);
+    background-size: cover;
+    background-position: center;
+    color: var(--text);
+    border: none;
+    border-radius: 0;
+    padding: 20px;
+}
+
+.extraInfo > * {
+    margin: 0;
+}
+
+.extraInfo p {
+    line-height: 1.6;
+}
+
+.extraInfo img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: inherit;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.castGrid {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+}
+
+.buttonsInfo {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.buttonsInfo button {
+    height: auto;
+    width: 200px;
+}
+
 
 @media (max-width: 768px) {
     .infoMovie {
