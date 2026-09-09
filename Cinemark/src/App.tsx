@@ -1,22 +1,12 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import './App.css'
 import { useMoviesStore } from './Store/UseMoviesStore'
 import  useUserStore from './Store/userInfo'
+import { useNavigate } from 'react-router-dom'
 import { ExtraInfo } from './components/ExtraInfo'
 import Movie from './components/Movie'
 
 function App() {
-import { useEffect, type ReactNode } from 'react'
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
-import Login from './Pages/Login/Login'
-import Favorites from './Pages/Favorites'
-import { useMoviesStore } from './Store/UseMoviesStore'
-import { ExtraInfo } from './components/ExtraInfo'
-import Movie from './components/Movie'
-import userInfo from './Store/userInfo'
-import './App.css'
-
-function MoviesView() {
   const items = useMoviesStore((state) => state.items)
   const error = useMoviesStore((state) => state.error)
   const loading = useMoviesStore((state) => state.loading)
@@ -30,25 +20,18 @@ function MoviesView() {
 
   const logout = useUserStore((state) => state.logout)
   const user = useUserStore((state) => state.user)
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchMovies()
   }, [fetchMovies, page])
-  const user = userInfo((state) => state.user)
-  const selectedMovie = items.find((item) => item.id === selectedMovieId)
-
-  useEffect(() => {
-    if (user) {
-      void fetchMovies()
-    }
-  }, [fetchMovies, page, user])
 
   return (
     <div style={{ padding: '20px' }}>
       <h1>Cinemark: Tu selector de películas.</h1>
 
       {!selectedMovie && (
-        <nav style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
+        <nav style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16 }}>
           <button type="button" className="counter" onClick={decrementar}>
             ⬅️
           </button>
@@ -63,16 +46,12 @@ function MoviesView() {
             <button
               type="button"
               className="counter"
-              onClick={logout}
+              onClick={() => { logout(); navigate('/', { replace: true }) }}
               style={{ marginLeft: 12 }}
             >
               Cerrar sesión
             </button>
           )}
-          <button type="button" className="counter" onClick={incrementar}>
-            ➡️
-          </button>
-          <Link to="/favorites">Ver favoritos</Link>
         </nav>
       )}
 
@@ -94,39 +73,6 @@ function MoviesView() {
         ))
       )}
     </div>
-  )
-}
-
-function ProtectedRoute({ children }: { children: ReactNode }) {
-  const user = userInfo((state) => state.user)
-  if (!user) return <Navigate to="/" replace />
-  return <>{children}</>
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route
-          path="/Movie"
-          element={
-            <ProtectedRoute>
-              <MoviesView />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/favorites"
-          element={
-            <ProtectedRoute>
-              <Favorites />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
   )
 }
 

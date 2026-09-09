@@ -15,7 +15,6 @@ function Login() {
   const setPassword = userInfo((state) => state.setPassword)
   const logout = userInfo((state) => state.logout)
   const navigate = useNavigate();
-  console.log('Login render -> userState:', userState, 'email:', email, 'password:', password)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
