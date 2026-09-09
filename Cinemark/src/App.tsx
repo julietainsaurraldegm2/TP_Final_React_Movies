@@ -1,12 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import './App.css'
 import { useMoviesStore } from './Store/UseMoviesStore'
-import  useUserStore from './Store/userInfo'
-import { useNavigate } from 'react-router-dom'
+import useUserStore from './Store/userInfo'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { ExtraInfo } from './components/ExtraInfo'
 import Movie from './components/Movie'
+import Login from './Pages/Login/Login'
+import Favorites from './Pages/Favorites'
 
-function App() {
+function MoviesView() {
   const items = useMoviesStore((state) => state.items)
   const error = useMoviesStore((state) => state.error)
   const loading = useMoviesStore((state) => state.loading)
@@ -20,11 +22,10 @@ function App() {
 
   const logout = useUserStore((state) => state.logout)
   const user = useUserStore((state) => state.user)
-  const navigate = useNavigate()
 
   useEffect(() => {
-    fetchMovies()
-  }, [fetchMovies, page])
+    if (user) void fetchMovies()
+  }, [fetchMovies, page, user])
 
   return (
     <div style={{ padding: '20px' }}>
@@ -46,7 +47,7 @@ function App() {
             <button
               type="button"
               className="counter"
-              onClick={() => { logout(); navigate('/', { replace: true }) }}
+              onClick={() => { logout(); }}
               style={{ marginLeft: 12 }}
             >
               Cerrar sesión
@@ -73,6 +74,31 @@ function App() {
         ))
       )}
     </div>
+  )
+}
+
+function ProtectedRoute({ children }: { children: ReactNode }) {
+  const user = useUserStore((state) => state.user)
+  if (!user) return <Navigate to="/" replace />
+  return <>{children}</>
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/Movie" element={
+        <ProtectedRoute>
+          <MoviesView />
+        </ProtectedRoute>
+      } />
+      <Route path="/favorites" element={
+        <ProtectedRoute>
+          <Favorites />
+        </ProtectedRoute>
+      } />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 
