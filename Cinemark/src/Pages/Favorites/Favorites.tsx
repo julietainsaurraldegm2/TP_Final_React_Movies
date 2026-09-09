@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { useFavoritesStore } from '../Store/favoritesStore'
-import { useMoviesStore } from '../Store/UseMoviesStore'
-import { ExtraInfo } from '../components/ExtraInfo'
+import { useFavoritesStore } from '../../Store/favoritesStore'
+import { useMoviesStore } from '../../Store/UseMoviesStore'
+import { useNavigate } from 'react-router-dom'
+import { ExtraInfo } from '../../components/ExtraInfo'
 
 function Favorites() {
   const favoriteIds = useFavoritesStore((state) => state.favoriteIds)
@@ -11,6 +12,7 @@ function Favorites() {
   const error = useMoviesStore((state) => state.error)
   const fetchMovies = useMoviesStore((state) => state.fetchMovies)
   const moreInfo = useMoviesStore((state) => state.moreInfo)
+  const navigate = useNavigate()
   const clearMoreInfo = useMoviesStore((state) => state.clearMoreInfo)
   const selectedMovieId = useMoviesStore((state) => state.selectedMovieId)
 
@@ -69,6 +71,9 @@ function Favorites() {
       {!loading && favoriteIds.length > 0 && favoriteMovies.length === 0 && (
         <p>No se encontraron películas favoritas en la lista cargada.</p>
       )}
+                  <button type="button" onClick={() => navigate(-1)}>
+                Volver a películas
+            </button>
     </div>
   )
 }
