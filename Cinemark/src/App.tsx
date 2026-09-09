@@ -1,14 +1,16 @@
-import { useEffect, type ReactNode } from 'react'
-import './App.css'
+import { useEffect, useState, type ReactNode } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useMoviesStore } from './Store/UseMoviesStore'
-import useUserStore from './Store/userInfo'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { ExtraInfo } from './components/ExtraInfo'
-import Movie from './components/Movie'
+import userInfo from './Store/userInfo'
 import Login from './Pages/Login/Login'
 import Favorites from './Pages/Favorites'
+import Movie from './components/Movie'
+import { ExtraInfo } from './components/ExtraInfo'
+import { Settings, useTema } from './components/Settings'
+import './App.css'
 
 function MoviesView() {
+  const { tema } = useTema()
   const items = useMoviesStore((state) => state.items)
   const error = useMoviesStore((state) => state.error)
   const loading = useMoviesStore((state) => state.loading)
@@ -18,27 +20,38 @@ function MoviesView() {
   const decrementar = useMoviesStore((state) => state.decrementar)
   const selectedMovieId = useMoviesStore((state) => state.selectedMovieId)
   const clearMoreInfo = useMoviesStore((state) => state.clearMoreInfo)
-  const selectedMovie = items.find((m) => m.id === selectedMovieId)
-
-  const logout = useUserStore((state) => state.logout)
-  const user = useUserStore((state) => state.user)
+  const user = userInfo((state) => state.user)
+  const logout = userInfo((state) => state.logout)
+  const [showSettings, setShowSettings] = useState(false)
+  const selectedMovie = items.find((item) => item.id === selectedMovieId)
 
   useEffect(() => {
     if (user) void fetchMovies()
   }, [fetchMovies, page, user])
 
+  if (showSettings) {
+    return (
+      <div className={`app-shell tema-${tema}`}>
+        <Settings onBack={() => setShowSettings(false)} />
+      </div>
+    )
+  }
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Cinemark: Tu selector de películas.</h1>
+    <div className={`app-shell tema-${tema}`}>
+      <header className="app-header">
+        <h1>Cinemark: Tu recomendador de películas.</h1>
+        <button type="button" className="navigation-button" onClick={() => setShowSettings(true)}>
+          Settings
+        </button>
+      </header>
 
       {!selectedMovie && (
-        <nav style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16 }}>
+        <nav style={{ display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center' }}>
           <button type="button" className="counter" onClick={decrementar}>
             ⬅️
           </button>
-
-          <span>{page}</span>
-
+          <span className="numberPage">{page}</span>
           <button type="button" className="counter" onClick={incrementar}>
             ➡️
           </button>
@@ -47,7 +60,7 @@ function MoviesView() {
             <button
               type="button"
               className="counter"
-              onClick={() => { logout(); }}
+              onClick={() => logout()}
               style={{ marginLeft: 12 }}
             >
               Cerrar sesión
@@ -62,9 +75,7 @@ function MoviesView() {
       {selectedMovie ? (
         <>
           <ExtraInfo item={selectedMovie} />
-          <button type="button" onClick={clearMoreInfo}>
-            Volver a películas
-          </button>
+          <button className="backButton" type="button" onClick={clearMoreInfo}>Volver a películas</button>
         </>
       ) : (
         items.map((item) => (
@@ -78,8 +89,9 @@ function MoviesView() {
 }
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
-  const user = useUserStore((state) => state.user)
+  const user = userInfo((state) => state.user)
   if (!user) return <Navigate to="/" replace />
+
   return <>{children}</>
 }
 
@@ -87,16 +99,22 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      <Route path="/Movie" element={
-        <ProtectedRoute>
-          <MoviesView />
-        </ProtectedRoute>
-      } />
-      <Route path="/favorites" element={
-        <ProtectedRoute>
-          <Favorites />
-        </ProtectedRoute>
-      } />
+      <Route
+        path="/Movie"
+        element={
+          <ProtectedRoute>
+            <MoviesView />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <ProtectedRoute>
+            <Favorites />
+          </ProtectedRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
