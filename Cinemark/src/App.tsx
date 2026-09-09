@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useMoviesStore } from './Store/UseMoviesStore'
 import userInfo from './Store/userInfo'
 import Login from './Pages/Login/Login'
@@ -21,12 +21,9 @@ function MoviesView() {
   const selectedMovieId = useMoviesStore((state) => state.selectedMovieId)
   const clearMoreInfo = useMoviesStore((state) => state.clearMoreInfo)
   const user = userInfo((state) => state.user)
+  const logout = userInfo((state) => state.logout)
   const [showSettings, setShowSettings] = useState(false)
   const selectedMovie = items.find((item) => item.id === selectedMovieId)
-  const selectedMovie = items.find((m) => m.id === selectedMovieId)
-
-  const logout = useUserStore((state) => state.logout)
-  const user = useUserStore((state) => state.user)
 
   useEffect(() => {
     if (user) void fetchMovies()
@@ -54,7 +51,7 @@ function MoviesView() {
           <button type="button" className="counter" onClick={decrementar}>
             ⬅️
           </button>
-          <span className='numberPage'>{page}</span>
+          <span className="numberPage">{page}</span>
           <button type="button" className="counter" onClick={incrementar}>
             ➡️
           </button>
@@ -63,7 +60,7 @@ function MoviesView() {
             <button
               type="button"
               className="counter"
-              onClick={() => { logout(); }}
+              onClick={() => logout()}
               style={{ marginLeft: 12 }}
             >
               Cerrar sesión
@@ -92,7 +89,7 @@ function MoviesView() {
 }
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
-  const user = useUserStore((state) => state.user)
+  const user = userInfo((state) => state.user)
   if (!user) return <Navigate to="/" replace />
 
   return <>{children}</>
@@ -102,16 +99,22 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      <Route path="/Movie" element={
-        <ProtectedRoute>
-          <MoviesView />
-        </ProtectedRoute>
-      } />
-      <Route path="/favorites" element={
-        <ProtectedRoute>
-          <Favorites />
-        </ProtectedRoute>
-      } />
+      <Route
+        path="/Movie"
+        element={
+          <ProtectedRoute>
+            <MoviesView />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/favorites"
+        element={
+          <ProtectedRoute>
+            <Favorites />
+          </ProtectedRoute>
+        }
+      />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

@@ -7,8 +7,10 @@ import { TemaProvider } from './components/Settings'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <TemaProvider>
-      <App />
-    </TemaProvider>
+    <BrowserRouter>
+      <TemaProvider>
+        <App />
+      </TemaProvider>
+    </BrowserRouter>
   </StrictMode>,
 )
