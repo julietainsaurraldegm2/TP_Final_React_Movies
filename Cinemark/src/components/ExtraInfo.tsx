@@ -1,5 +1,6 @@
 import { useMoviesStore } from "../Store/UseMoviesStore";
 import type { Movies } from "../Types/movies";
+import CommentUser from "./CommentUser";
 import "./MovieStyle.css";
 
 interface MovieProps {
@@ -23,7 +24,8 @@ function ExtraInfo({ item }: MovieProps) {
 
                 {detailsLoading && <p>Cargando información adicional...</p>}
                 {detailsError && <p>{detailsError}</p>}
-
+            </div>
+            <div className="extraInfo">
                 <h3>Elenco de la pelicula:</h3>
                 <div className="castGrid">
                     {cast.map((actor) => (
@@ -40,23 +42,27 @@ function ExtraInfo({ item }: MovieProps) {
                     ))}
                 </div>
 
-                <section className="reviewsSection">
-                    <h3>Reviews:</h3>
-                    {reviews.length > 0 ? (
-                        reviews.map((review) => (
-                            <article key={review.id} className="reviewCard">
-                                <h4>{review.author}</h4>
-                                {review.author_details?.rating != null && (
-                                    <p>Valoración: {review.author_details.rating}/10</p>
-                                )}
-                                <p className="reviewContent">{review.content}</p>
-                                <small>{new Date(review.created_at).toLocaleDateString("es-ES")}</small>
-                            </article>
-                        ))
-                    ) : (
-                        <p>No hay reviews disponibles para esta película.</p>
-                    )}
-                </section>
+                <div>
+                    <section className="reviewsSection">
+                        <h3>Reviews:</h3>
+                        {reviews.length > 0 ? (
+                            reviews.map((review) => (
+                                <article key={review.id} className="reviewCard">
+                                    <h4>{review.author}</h4>
+                                    {review.author_details?.rating != null && (
+                                        <p>Valoración: {review.author_details.rating}/10</p>
+                                    )}
+                                    <p className="reviewContent">{review.content}</p>
+                                    <small>{new Date(review.created_at).toLocaleDateString("es-ES")}</small>
+                                </article>
+                            ))
+                        ) : (
+                            <p>No hay reviews disponibles para esta película.</p>
+                        )}
+                    </section>
+
+                    <CommentUser key={`${item.id}-${item.title}`} pelicula={item} />
+                </div>
             </div>
         </div>
     );
