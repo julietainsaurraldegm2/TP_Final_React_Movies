@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate  } from 'react-router-dom';
-import userInfo from "../../Store/userInfo";
+import userInfo from "../../Store/userInfoStore";
 import "./Login.css"
 
 function Login() {

@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { useMoviesStore } from './Store/UseMoviesStore'
-import userInfo from './Store/userInfo'
+import userInfo from './Store/userInfoStore'
 import Login from './Pages/Login/Login'
 import Favorites from './Pages/Favorites/Favorites'
 import Movie from './components/Movie'

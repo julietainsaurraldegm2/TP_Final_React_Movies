@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Movies } from "../Types/movies";
-import userInfo from "../Store/userInfo";
+import userInfo from "../Store/userInfoStore";
 
 interface CommentUserProps {
     pelicula: Movies;
