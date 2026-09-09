@@ -53,12 +53,12 @@ function MoviesView() {
       </header>
 
       {!selectedMovie && (
-        <nav style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16 }}>
+        <nav style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16, marginLeft: 'auto', marginRight: 'auto' }}>
           <button type="button" className="counter" onClick={decrementar}>
             ⬅️
           </button>
 
-          <span>{page}</span>
+          <span className='numberPage'>{page}</span>
 
           <button type="button" className="counter" onClick={incrementar}>
             ➡️
