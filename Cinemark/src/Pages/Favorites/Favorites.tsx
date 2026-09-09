@@ -66,14 +66,14 @@ function Favorites() {
               </div>
             </div>
           ))}
-            <button type="button" onClick={() => navigate(-1)}>
-                Volver a películas
-            </button>
         </div>
       )}
       {!loading && favoriteIds.length > 0 && favoriteMovies.length === 0 && (
         <p>No se encontraron películas favoritas en la lista cargada.</p>
       )}
+                  <button type="button" onClick={() => navigate(-1)}>
+                Volver a películas
+            </button>
     </div>
   )
 }
