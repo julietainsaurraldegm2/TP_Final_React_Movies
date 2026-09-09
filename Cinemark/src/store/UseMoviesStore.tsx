@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Actor, Movies, Review } from '../Types/movies';
+import type { Actor, Movies, Review, Video } from '../Types/movies';
 
 const API_KEY = '8c10e7a4a8f3744b5128e0c32584a906';
 const options = {
@@ -9,7 +9,6 @@ const options = {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YzEwZTdhNGE4ZjM3NDRiNTEyOGUwYzMyNTg0YTkwNiIsIm5iZiI6MTc4ODQzOTIyMS4yNjksInN1YiI6IjZhOTk2YWI1YjM1NmYwNTNmY2IyZjhjZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NqkTZkqmSUuYQ9eFoDjpWuHmuSsxr2cboEvSPdoAipc'
     }
 };
-
 const API_URL = 'https://api.themoviedb.org/3';
 
 async function fetchApiData<T>(endpoint: string): Promise<T> {
@@ -35,6 +34,7 @@ interface MoviesState {
     selectedMovieId: number | null;
     cast: Actor[];
     reviews: Review[];
+    videos: Video[];
     detailsLoading: boolean;
     detailsError: string | null;
 }
@@ -44,6 +44,7 @@ export const useMoviesStore = create<MoviesState>((set, get) => ({
     error: null,
     cast: [],
     reviews: [],
+    videos: [],
     detailsLoading: false,
     detailsError: null,
     loading: false,
@@ -75,19 +76,24 @@ export const useMoviesStore = create<MoviesState>((set, get) => ({
             selectedMovieId: movieId,
             cast: [],
             reviews: [],
+            videos: [],
             detailsLoading: true,
             detailsError: null,
         });
 
         try {
-            const [credits, reviews] = await Promise.all([
+            const [credits, reviews, videos] = await Promise.all([
                 fetchApiData<{ cast: Actor[] }>(`/movie/${movieId}/credits?language=es-ES`),
                 fetchApiData<{ results: Review[] }>(`/movie/${movieId}/reviews?language=es-ES&page=1`),
+                fetchApiData<{ results: Video[] }>(`/movie/${movieId}/videos?language=es-ES`),
             ]);
 
             set({
                 cast: credits.cast.slice(0, 8),
                 reviews: reviews.results,
+                videos: videos.results.filter(
+                    (video) => video.site === 'YouTube' && (video.type === 'Trailer' || video.type === 'Teaser')
+                ),
                 detailsLoading: false,
             });
         } catch (err) {
@@ -101,6 +107,7 @@ export const useMoviesStore = create<MoviesState>((set, get) => ({
         selectedMovieId: null,
         cast: [],
         reviews: [],
+        videos: [],
         detailsError: null,
     }),
 }))

@@ -10,9 +10,11 @@ interface MovieProps {
 function ExtraInfo({ item }: MovieProps) {
     const cast = useMoviesStore((state) => state.cast);
     const reviews = useMoviesStore((state) => state.reviews);
+    const videos = useMoviesStore((state) => state.videos);
     const detailsLoading = useMoviesStore((state) => state.detailsLoading);
     const detailsError = useMoviesStore((state) => state.detailsError);
     const baseUrlImages = "https://image.tmdb.org/t/p/w500/";
+    const trailer = videos.find((video) => video.site === 'YouTube' && (video.type === 'Trailer' || video.type === 'Teaser'));
 
     return (
         <div>
@@ -26,6 +28,20 @@ function ExtraInfo({ item }: MovieProps) {
                 {detailsError && <p>{detailsError}</p>}
             </div>
             <div className="extraInfo">
+                {trailer && (
+                    <section className="trailerSection">
+                        <h3>Trailer</h3>
+                        <div className="videoWrapper">
+                            <iframe
+                                src={`https://www.youtube.com/embed/${trailer.key}`}
+                                title={trailer.name}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            />
+                        </div>
+                    </section>
+                )}
+
                 <h3>Elenco de la pelicula:</h3>
                 <div className="castGrid">
                     {cast.map((actor) => (

@@ -144,7 +144,6 @@
     width: 200px;
 }
 
-
 @media (max-width: 768px) {
     .infoMovie {
         grid-template-columns: 1fr;
