@@ -32,7 +32,7 @@ function Login() {
 
   return (
     <div className="login-page">
-      <p className="login-welcome">Bienvenido {userState ? userState.name : 'visitante'}</p>
+      <p id="login-welcome"className="login-welcome">Bienvenido {userState ? userState.name : 'visitante'}</p>
 
       {!userState ? (
         <form onSubmit={handleSubmit} id="login-form">
