@@ -83,7 +83,7 @@ function MoviesView() {
       {selectedMovie ? (
         <>
           <ExtraInfo item={selectedMovie} />
-          <button type="button" onClick={clearMoreInfo}>
+          <button className="backButton" type="button" onClick={clearMoreInfo}>
             Volver a películas
           </button>
         </>
