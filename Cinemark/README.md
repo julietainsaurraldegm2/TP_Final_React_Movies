@@ -1,32 +1,13 @@
-# React + TypeScript + Vite
+# Cinemark - Recomendador de peliculas
+Julieta Insaurralde - Santiago Barua
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Aplicación web para descubrir películas. Permite iniciar sesión, explorar películas populares (vía la API de TMDB), ver el detalle de cada una con elenco y reviews, marcar favoritas y cambiar entre tema claro y oscuro.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- **Login persistente**: se valida contra un archivo local de credenciales de prueba. La sesión queda guardada y no se pierde al recargar la página.
+- **Rutas protegidas**: si no iniciaste sesión, no podés acceder a `/Movie` ni a `/favorites`.
+- **Listado de películas**: trae populares desde la API de TMDB, con paginación.
+- **Detalle de película**: overview, elenco, reviews de TMDB y comentarios propios con rating.
+- **Favoritos**: marcá/desmarcá películas; se guardan en `localStorage` y persisten entre sesiones.
+- **Tema claro/oscuro**: se puede cambiar desde la pantalla de Configuración y se recuerda la preferencia.
