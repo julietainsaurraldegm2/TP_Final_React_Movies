@@ -31,12 +31,12 @@ function Login() {
   }
 
   return (
-    <>
-      <p>Bienvenido {userState ? userState.name : 'visitante'}</p>
+    <div className="login-page">
+      <p className="login-welcome">Bienvenido {userState ? userState.name : 'visitante'}</p>
 
       {!userState ? (
         <form onSubmit={handleSubmit} id="login-form">
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {error && <p className="error">{error}</p>}
           <input
             id="name-input"
             type="text"
@@ -66,12 +66,13 @@ function Login() {
           </button>
         </form>
       ) : (
-        <button type="button" onClick={logout}>
+        <button type="button" className="logout-button" onClick={logout}>
           Cerrar sesión
         </button>
       )}
-    </>
-  )}
+    </div>
+  )
+}
 
 
 export default Login
