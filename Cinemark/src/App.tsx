@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { useMoviesStore } from './Store/UseMoviesStore'
 import userInfo from './Store/userInfo'
 import Login from './Pages/Login/Login'
@@ -22,6 +22,7 @@ function MoviesView() {
   const clearMoreInfo = useMoviesStore((state) => state.clearMoreInfo)
   const user = userInfo((state) => state.user)
   const logout = userInfo((state) => state.logout)
+  const navigate = useNavigate()
   const [showSettings, setShowSettings] = useState(false)
   const selectedMovie = items.find((item) => item.id === selectedMovieId)
 
@@ -43,6 +44,9 @@ function MoviesView() {
         <h1>Cinemark: Tu recomendador de películas.</h1>
         <button type="button" className="navigation-button" onClick={() => setShowSettings(true)}>
           Settings
+        </button>
+        <button type="button" className="navigation-button" onClick={() => navigate('/favorites')}>
+          Ver favoritos
         </button>
       </header>
 
