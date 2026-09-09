@@ -11,3 +11,9 @@ Aplicación web para descubrir películas. Permite iniciar sesión, explorar pel
 - **Detalle de película**: overview, elenco, reviews de TMDB y comentarios propios con rating.
 - **Favoritos**: marcá/desmarcá películas; se guardan en `localStorage` y persisten entre sesiones.
 - **Tema claro/oscuro**: se puede cambiar desde la pantalla de Configuración y se recuerda la preferencia.
+
+## Como iniciar la pagina
+```bash
+npm install
+npm run dev
+```
